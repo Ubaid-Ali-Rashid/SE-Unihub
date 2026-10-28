@@ -1,0 +1,84 @@
+DATA FLOW DESCRIPTION — UniHub
+================================
+Last updated: 2026-10-27
+
+Source: Level 1 Data Flow Diagram (DFD.png in project root).
+
+
+EXTERNAL ENTITIES
+------------------
+E1  Student        Primary user; interacts with all processes.
+E2  Admin/Faculty  Manages users, events, announcements, guidelines,
+                   deadlines, FAQs; approves answers.
+E3  Visitor        Browses FAQs and approved Q&A without logging in.
+
+
+PROCESSES
+----------
+P1.0  User Management
+      Handles login, registration, and profile data.
+      Reads/writes: D1 (Users)
+
+P2.0  Campus Navigation
+      Lets users search locations, view maps, and get directions.
+      Reads/writes: D2 (Locations)
+
+P3.0  Academic Info
+      Provides course and department information by semester.
+      Reads/writes: D3 (Courses, Departments)
+
+P4.0  Society & Events
+      Lists societies and their events.
+      Reads/writes: D4 (Societies, Events)
+
+P5.0  Q&A Forum
+      Allows students to ask questions and post answers.
+      Visitors can view approved Q&A.
+      Reads/writes: D5 (Questions, Answers)
+
+P6.0  Announcements & Deadlines
+      Displays announcements and upcoming deadlines.
+      Admin/faculty post new entries.
+      Reads/writes: D6 (Announcements, Deadlines)
+
+P7.0  Guidelines & FAQs
+      Displays guidelines and FAQs by category and department.
+      Visitors can browse FAQs without login.
+      Reads/writes: D7 (Guidelines, FAQs)
+
+
+DATA STORES
+-------------
+D1  Users               User accounts with role, department, batch year.
+D2  Locations            Campus locations with coordinates and directions.
+D3  Courses/Departments  Courses per department and semester; department
+                         details.
+D4  Societies/Events     Society info and their events with location.
+D5  Questions/Answers    Community Q&A; answers have approval status.
+D6  Announcements/       Posted by admin/faculty, tied to departments.
+    Deadlines
+D7  Guidelines/FAQs      Official guidelines and frequently asked
+                         questions, organized by category.
+
+
+KEY DATA FLOWS
+---------------
+Student  → P1.0  :  Login credentials, registration data
+P1.0     → D1    :  Store/retrieve user records
+Student  → P2.0  :  Location search query
+P2.0     → D2    :  Store/retrieve location data
+Student  → P5.0  :  New question, new answer
+P5.0     → D5    :  Store/retrieve Q&A data
+Admin    → P6.0  :  New announcement, new deadline
+P6.0     → D6    :  Store/retrieve announcements and deadlines
+Visitor  → P7.0  :  FAQ browse request
+P7.0     → D7    :  Retrieve guidelines and FAQs
+Admin    → P4.0  :  Manage society/event data
+P4.0     → D4    :  Store/retrieve society and event records
+P3.0     → D3    :  Retrieve course and department info
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated whenever a new process, external
+entity, data store, or data flow is added or modified in the DFD.
+------------------------------------------------------------------------

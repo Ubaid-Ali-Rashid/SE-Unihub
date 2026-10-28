@@ -1,0 +1,55 @@
+USER ROLES AND PERMISSIONS — UniHub
+=====================================
+Last updated: 2026-10-27
+
+
+ROLE 1: VISITOR (unauthenticated)
+----------------------------------
+Permissions:
+- Browse FAQs
+- View approved Q&A (questions and approved answers only)
+
+Restrictions:
+- Cannot post questions
+- Cannot post answers
+- Cannot access checklist
+- Cannot view unapproved answers
+
+
+ROLE 2: STUDENT (authenticated)
+---------------------------------
+Permissions:
+- Everything a Visitor can do
+- Post questions
+- Post answers to questions
+- Manage personal checklist (mark items as done)
+- View department locations, faculty, courses
+- View guidelines, deadlines, announcements
+- View societies and events
+
+Restrictions:
+- Cannot approve answers
+- Cannot create or edit announcements, guidelines, deadlines, FAQs
+- Cannot manage other users
+
+
+ROLE 3: ADMIN / FACULTY (authenticated, elevated)
+---------------------------------------------------
+Permissions:
+- Everything a Student can do
+- Manage users (create, edit)
+- Create and edit announcements
+- Create and edit guidelines
+- Create and edit deadlines
+- Create and edit FAQs
+- Manage societies and events
+- Manage locations and faculty listings
+- Manage courses
+- Approve or reject community answers
+- Manage checklist items
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated whenever a role is added,
+removed, or its permissions change.
+------------------------------------------------------------------------

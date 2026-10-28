@@ -1,0 +1,38 @@
+TECHNOLOGY STACK — UniHub
+==========================
+Last updated: 2026-10-27
+
+
+BACKEND
+--------
+Language    :  Python 3.10
+Framework   :  Django 5.2.18
+Database    :  SQLite 3 (default, via django.db.backends.sqlite3)
+
+
+LIBRARIES
+----------
+matplotlib  :  Used for generating project diagrams (Gantt chart, DFD)
+pillow      :  Image processing (installed as matplotlib dependency)
+numpy       :  Numerical operations (installed as matplotlib dependency)
+
+
+DEVELOPMENT TOOLS
+------------------
+Virtual env :  venv (located at Project/venv/)
+Package mgr :  pip
+
+
+PROJECT SETTINGS
+-----------------
+DEBUG       :  True (development mode)
+TIME_ZONE   :  UTC
+LANGUAGE    :  en-us
+STATIC_URL  :  /static/
+DEFAULT_AUTO_FIELD : django.db.models.BigAutoField
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated whenever a new technology,
+library, framework, or tool is added to or removed from the project.
+------------------------------------------------------------------------

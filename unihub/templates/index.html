@@ -1,0 +1,547 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'logo/favicon.ico' %}">
+    <title>{{ home.page_title|default:"UniHub - Freshman Student Portal" }}</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Swiper 3D CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+
+    <!-- Three.js (WebGL 3D Engine for Interactive 3D Background) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="{% static 'style/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'style/announcement.css' %}">
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+</head>
+<body>
+
+    <!-- ──────────────────────────────────────────────
+         WebGL 3D Interactive Background Canvas
+    ────────────────────────────────────────────── -->
+    <canvas id="webgl-3d-bg"></canvas>
+
+    <!-- Optional Top Announcement Notice (from Home model) -->
+    {% if home.show_announcement and home.announcement %}
+    <div class="announcement">
+        <div class="inner-announcement">
+            <div class="announcement-content">
+                <span class="announcement-badge"><i class="fa-solid fa-bullhorn"></i> Notice</span>
+                <p class="announcement-text">{{ home.announcement }}</p>
+            </div>
+            <div class="cross" id="cross" title="Dismiss notice">&times;</div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Reusable Glassmorphism Navbar Component -->
+    {% include 'navbar.html' %}
+
+    <main class="body-container">
+
+        <!-- ──────────────────────────────────────────────
+             1. Hero Section (with Join UniHub inside body)
+        ────────────────────────────────────────────── -->
+        <section class="hero-section" id="about">
+            <!-- Left: Frosted Glass 3D Description Card with Tilt & Scroll Animation -->
+            <div class="hero-3d-card tilt-3d reveal-on-scroll">
+                <div class="hero-card-glow"></div>
+                <span class="hero-badge-3d layer-3d-mid">
+                    <i class="fa-solid fa-compass-drafting"></i> Freshman Orientation Portal
+                </span>
+
+                <h1 class="hero-heading layer-3d-deep">
+                    {{ home.desc_heading|default:"Welcome to UniHub" }}
+                </h1>
+
+                <!-- Condition: If description is given, show it. If not, show "Coming Soon" centered in boundary -->
+                {% if home.description and home.description.strip %}
+                    <div class="description-content layer-3d-mid">
+                        <p>{{ home.description|linebreaks }}</p>
+                    </div>
+                    <!-- "Join UniHub" button placed inside the body box -->
+                    <div class="hero-actions layer-3d-deep">
+                        <a href="{{ home.nav_button_url|default:'#events' }}" class="btn-3d-primary">
+                            {{ home.nav_button_text|default:"Join UniHub" }} <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        {% if home.hero_button_text %}
+                            <a href="{{ home.hero_button_url|default:'#events' }}" class="btn-3d-secondary">
+                                {{ home.hero_button_text }} <i class="fa-solid fa-compass"></i>
+                            </a>
+                        {% endif %}
+                        {% if home.secondary_button_text %}
+                            <a href="{{ home.secondary_button_url|default:'#subscribe' }}" class="btn-3d-secondary">
+                                {{ home.secondary_button_text }} <i class="fa-regular fa-bell"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <!-- "Coming Soon" Box centered in boundary -->
+                    <div class="coming-soon-container-3d">
+                        <div class="coming-soon-box-3d">
+                            <div class="coming-soon-glow"></div>
+                            <i class="fa-solid fa-clock-rotate-left coming-soon-icon-3d"></i>
+                            <h3 class="coming-soon-title-3d">Coming Soon</h3>
+                            <p class="coming-soon-desc-3d">Detailed guide content is currently being prepared by administrators.</p>
+                        </div>
+                    </div>
+                    <!-- Action buttons placed inside the body container -->
+                    <div class="hero-actions layer-3d-deep" style="margin-top: 1.5rem; justify-content: center;">
+                        <a href="{{ home.nav_button_url|default:'#events' }}" class="btn-3d-primary">
+                            {{ home.nav_button_text|default:"Join UniHub" }} <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Right: Static 3D Media Stage (No floating animations; strictly static) -->
+            <div class="hero-media-stage reveal-on-scroll reveal-delay-2">
+                <div class="hero-media-wrapper-3d static-media-box">
+                    {% if home.hero_video_url %}
+                        <video loop muted playsinline autoplay controls class="hero-video" id="hero-video">
+                            <source src="{{ home.hero_video_url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% elif home.hero_image %}
+                        <img src="{{ home.hero_image }}" alt="UniHub Campus" class="hero-image" loading="lazy">
+                    {% else %}
+                        <div class="media-placeholder-3d static-placeholder">
+                            <div class="placeholder-floating-badge">
+                                <i class="fa-solid fa-cube"></i> 3D Campus Experience
+                            </div>
+                            <i class="fa-solid fa-graduation-cap hero-cap-icon-static"></i>
+                            <h3>UniHub Campus Guide</h3>
+                            <p>Replacing the senior you don't have yet with verified guidance, departmental rules, and 3D campus immersion.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- ──────────────────────────────────────────────
+             2. Database Section: EVENTS
+             Only appears if events exist in DB!
+             If > 3 items: 3D Coverflow Carousel (Auto + Manual)
+             If <= 3 items: Static 3D Cards Grid
+        ────────────────────────────────────────────── -->
+        {% if events_count > 0 %}
+        <section class="swiper-3d-wrapper-section reveal-on-scroll" id="events">
+            <div class="section-header-3d">
+                <span class="section-pill-3d"><i class="fa-solid fa-calendar-star"></i> Campus Happenings</span>
+                <h2 class="section-title-3d">{{ home.event_heading|default:"Upcoming Events" }}</h2>
+                <p class="section-subtitle-3d">{{ home.event_description|default:"Orientation workshops, club meets, and university activities." }}</p>
+            </div>
+
+            {% if events_count > 3 %}
+                <!-- 3D Carousel (> 3 items) with Auto + Manual controls -->
+                <div class="swiper swiper-3d-carousel events-carousel">
+                    <div class="swiper-wrapper">
+                        {% for event in events %}
+                        <div class="swiper-slide tilt-3d">
+                            <div class="slide-media-banner">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                            <div class="slide-body">
+                                <div>
+                                    <h3 class="card-3d-title">{{ event.title|default:"Campus Event" }}</h3>
+                                    {% if event.society %}
+                                        <div class="card-3d-meta">
+                                            <i class="fa-solid fa-users"></i> {{ event.society.name }}
+                                        </div>
+                                    {% endif %}
+                                    {% if event.location %}
+                                        <div class="card-3d-meta">
+                                            <i class="fa-solid fa-location-dot"></i> {{ event.location.name }}
+                                        </div>
+                                    {% endif %}
+                                    {% if event.starts_at %}
+                                        <div class="card-3d-meta">
+                                            <i class="fa-solid fa-clock"></i> {{ event.starts_at|date:"M d, Y H:i" }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <a href="#events" class="btn-3d-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">
+                                    Event Details <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Manual Controls -->
+                    <div class="swiper-button-prev swiper-btn-3d"></div>
+                    <div class="swiper-button-next swiper-btn-3d"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            {% else %}
+                <!-- Static 3D Grid (<= 3 items) with scroll reveal -->
+                <div class="cards-3d-grid">
+                    {% for event in events %}
+                    <div class="card-3d-item tilt-3d reveal-on-scroll reveal-delay-{{ forloop.counter }}">
+                        <div class="card-3d-icon">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <h3 class="card-3d-title">{{ event.title|default:"Campus Event" }}</h3>
+                        {% if event.society %}
+                            <div class="card-3d-meta">
+                                <i class="fa-solid fa-users"></i> {{ event.society.name }}
+                            </div>
+                        {% endif %}
+                        {% if event.location %}
+                            <div class="card-3d-meta">
+                                <i class="fa-solid fa-location-dot"></i> {{ event.location.name }}
+                            </div>
+                        {% endif %}
+                        {% if event.starts_at %}
+                            <div class="card-3d-meta">
+                                <i class="fa-solid fa-clock"></i> {{ event.starts_at|date:"M d, Y H:i" }}
+                            </div>
+                        {% endif %}
+                        <a href="#events" class="btn-3d-secondary" style="margin-top: auto; width: 100%; justify-content: center;">
+                            Event Details <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <!-- ──────────────────────────────────────────────
+             3. Database Section: SOCIETIES
+             Only appears if societies exist in DB!
+             If > 3 items: 3D Coverflow Carousel (Auto + Manual)
+             If <= 3 items: Static 3D Cards Grid
+        ────────────────────────────────────────────── -->
+        {% if societies_count > 0 %}
+        <section class="swiper-3d-wrapper-section reveal-on-scroll" id="societies">
+            <div class="section-header-3d">
+                <span class="section-pill-3d"><i class="fa-solid fa-people-group"></i> Student Life</span>
+                <h2 class="section-title-3d">Student Societies</h2>
+                <p class="section-subtitle-3d">Discover clubs, technical chapters, and arts societies across campus.</p>
+            </div>
+
+            {% if societies_count > 3 %}
+                <div class="swiper swiper-3d-carousel societies-carousel">
+                    <div class="swiper-wrapper">
+                        {% for society in societies %}
+                        <div class="swiper-slide tilt-3d">
+                            <div class="slide-media-banner" style="background: linear-gradient(135deg, #1e3a8a, #0d9488);">
+                                <i class="fa-solid fa-users-rays"></i>
+                            </div>
+                            <div class="slide-body">
+                                <div>
+                                    <h3 class="card-3d-title">{{ society.name }}</h3>
+                                    {% if society.contact %}
+                                        <div class="card-3d-meta">
+                                            <i class="fa-solid fa-envelope"></i> {{ society.contact }}
+                                        </div>
+                                    {% endif %}
+                                    <p class="card-3d-desc">{{ society.how_to_join|truncatewords:20|default:"Learn how to become a member." }}</p>
+                                </div>
+                                <a href="#societies" class="btn-3d-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">
+                                    How to Join <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-prev swiper-btn-3d"></div>
+                    <div class="swiper-button-next swiper-btn-3d"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            {% else %}
+                <div class="cards-3d-grid">
+                    {% for society in societies %}
+                    <div class="card-3d-item tilt-3d reveal-on-scroll reveal-delay-{{ forloop.counter }}">
+                        <div class="card-3d-icon" style="background: linear-gradient(135deg, #ccfbf1, #99f6e4); color: #0f766e;">
+                            <i class="fa-solid fa-users-rays"></i>
+                        </div>
+                        <h3 class="card-3d-title">{{ society.name }}</h3>
+                        {% if society.contact %}
+                            <div class="card-3d-meta">
+                                <i class="fa-solid fa-envelope"></i> {{ society.contact }}
+                            </div>
+                        {% endif %}
+                        <p class="card-3d-desc">{{ society.how_to_join|default:"Learn how to become a member and get involved in society projects." }}</p>
+                        <a href="#societies" class="btn-3d-secondary" style="margin-top: auto; width: 100%; justify-content: center;">
+                            How to Join <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <!-- ──────────────────────────────────────────────
+             4. Database Section: ANNOUNCEMENTS
+             Only appears if announcements exist in DB!
+             If > 3 items: 3D Coverflow Carousel (Auto + Manual)
+             If <= 3 items: Static 3D Cards Grid
+        ────────────────────────────────────────────── -->
+        {% if announcements_count > 0 %}
+        <section class="swiper-3d-wrapper-section reveal-on-scroll" id="announcements">
+            <div class="section-header-3d">
+                <span class="section-pill-3d"><i class="fa-solid fa-bullhorn"></i> Official Updates</span>
+                <h2 class="section-title-3d">Latest Announcements</h2>
+                <p class="section-subtitle-3d">Stay informed with updates verified by university departments.</p>
+            </div>
+
+            {% if announcements_count > 3 %}
+                <div class="swiper swiper-3d-carousel announcements-carousel">
+                    <div class="swiper-wrapper">
+                        {% for announcement in announcements %}
+                        <div class="swiper-slide tilt-3d">
+                            <div class="slide-media-banner" style="background: linear-gradient(135deg, #b91c1c, #dc2626);">
+                                <i class="fa-solid fa-newspaper"></i>
+                            </div>
+                            <div class="slide-body">
+                                <div>
+                                    <h3 class="card-3d-title">{{ announcement.title }}</h3>
+                                    {% if announcement.department %}
+                                        <div class="card-3d-meta">
+                                            <i class="fa-solid fa-building-columns"></i> {{ announcement.department.name }}
+                                        </div>
+                                    {% endif %}
+                                    {% if announcement.published_at %}
+                                        <div class="card-3d-meta">
+                                            <i class="fa-solid fa-clock"></i> {{ announcement.published_at|date:"M d, Y" }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-prev swiper-btn-3d"></div>
+                    <div class="swiper-button-next swiper-btn-3d"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            {% else %}
+                <div class="cards-3d-grid">
+                    {% for announcement in announcements %}
+                    <div class="card-3d-item tilt-3d reveal-on-scroll reveal-delay-{{ forloop.counter }}">
+                        <div class="card-3d-icon" style="background: #fee2e2; color: #b91c1c;">
+                            <i class="fa-solid fa-newspaper"></i>
+                        </div>
+                        <h3 class="card-3d-title">{{ announcement.title }}</h3>
+                        {% if announcement.department %}
+                            <div class="card-3d-meta">
+                                <i class="fa-solid fa-building-columns"></i> {{ announcement.department.name }}
+                            </div>
+                        {% endif %}
+                        {% if announcement.published_at %}
+                            <div class="card-3d-meta">
+                                <i class="fa-solid fa-clock"></i> {{ announcement.published_at|date:"M d, Y" }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <!-- ──────────────────────────────────────────────
+             5. Database Section: DEADLINES
+             Only appears if deadlines exist in DB!
+             If > 3 items: 3D Coverflow Carousel (Auto + Manual)
+             If <= 3 items: Static 3D Cards Grid
+        ────────────────────────────────────────────── -->
+        {% if deadlines_count > 0 %}
+        <section class="swiper-3d-wrapper-section reveal-on-scroll" id="deadlines">
+            <div class="section-header-3d">
+                <span class="section-pill-3d"><i class="fa-solid fa-hourglass-half"></i> Action Required</span>
+                <h2 class="section-title-3d">Upcoming Deadlines</h2>
+                <p class="section-subtitle-3d">Important dates for course registration, fee submission, and forms.</p>
+            </div>
+
+            {% if deadlines_count > 3 %}
+                <div class="swiper swiper-3d-carousel deadlines-carousel">
+                    <div class="swiper-wrapper">
+                        {% for deadline in deadlines %}
+                        <div class="swiper-slide tilt-3d">
+                            <div class="slide-media-banner" style="background: linear-gradient(135deg, #ea580c, #f97316);">
+                                <i class="fa-solid fa-calendar-xmark"></i>
+                            </div>
+                            <div class="slide-body">
+                                <div>
+                                    <h3 class="card-3d-title">{{ deadline.title }}</h3>
+                                    {% if deadline.department %}
+                                        <div class="card-3d-meta">
+                                            <i class="fa-solid fa-building-columns"></i> {{ deadline.department.name }}
+                                        </div>
+                                    {% endif %}
+                                    {% if deadline.due_date %}
+                                        <div class="card-3d-meta" style="color: #b91c1c; font-weight: 700;">
+                                            <i class="fa-solid fa-fire"></i> Due: {{ deadline.due_date|date:"M d, Y H:i" }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-prev swiper-btn-3d"></div>
+                    <div class="swiper-button-next swiper-btn-3d"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            {% else %}
+                <div class="cards-3d-grid">
+                    {% for deadline in deadlines %}
+                    <div class="card-3d-item tilt-3d reveal-on-scroll reveal-delay-{{ forloop.counter }}">
+                        <div class="card-3d-icon" style="background: #ffedd5; color: #ea580c;">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                        </div>
+                        <h3 class="card-3d-title">{{ deadline.title }}</h3>
+                        {% if deadline.department %}
+                            <div class="card-3d-meta">
+                                <i class="fa-solid fa-building-columns"></i> {{ deadline.department.name }}
+                            </div>
+                        {% endif %}
+                        {% if deadline.due_date %}
+                            <div class="card-3d-meta" style="color: #b91c1c; font-weight: 700;">
+                                <i class="fa-solid fa-fire"></i> Due: {{ deadline.due_date|date:"M d, Y H:i" }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <!-- ──────────────────────────────────────────────
+             6. Database Section: FAQs
+             Only appears if FAQs exist in DB!
+             If > 3 items: 3D Coverflow Carousel (Auto + Manual)
+             If <= 3 items: Static 3D Cards Grid
+        ────────────────────────────────────────────── -->
+        {% if faqs_count > 0 %}
+        <section class="swiper-3d-wrapper-section reveal-on-scroll" id="faqs">
+            <div class="section-header-3d">
+                <span class="section-pill-3d"><i class="fa-solid fa-circle-question"></i> Help & Answers</span>
+                <h2 class="section-title-3d">{{ home.faq_heading|default:"Frequently Asked Questions" }}</h2>
+                <p class="section-subtitle-3d">{{ home.faq_description|default:"Common questions asked by freshers joining the university." }}</p>
+            </div>
+
+            {% if faqs_count > 3 %}
+                <div class="swiper swiper-3d-carousel faqs-carousel">
+                    <div class="swiper-wrapper">
+                        {% for faq in faqs %}
+                        <div class="swiper-slide tilt-3d">
+                            <div class="slide-media-banner" style="background: linear-gradient(135deg, #15803d, #22c55e);">
+                                <i class="fa-solid fa-clipboard-question"></i>
+                            </div>
+                            <div class="slide-body">
+                                <div>
+                                    <h3 class="card-3d-title">{{ faq.question }}</h3>
+                                    <p class="card-3d-desc">{{ faq.answer|truncatewords:25 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-prev swiper-btn-3d"></div>
+                    <div class="swiper-button-next swiper-btn-3d"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            {% else %}
+                <div class="cards-3d-grid">
+                    {% for faq in faqs %}
+                    <div class="card-3d-item tilt-3d reveal-on-scroll reveal-delay-{{ forloop.counter }}">
+                        <div class="card-3d-icon" style="background: #dcfce7; color: #15803d;">
+                            <i class="fa-solid fa-clipboard-question"></i>
+                        </div>
+                        <h3 class="card-3d-title">{{ faq.question }}</h3>
+                        <p class="card-3d-desc">{{ faq.answer }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <!-- ──────────────────────────────────────────────
+             7. Frosted 3D Stay Connected / Subscription Section
+        ────────────────────────────────────────────── -->
+        <section class="subscribe-section-3d tilt-3d reveal-on-scroll" id="subscribe">
+            <div class="subscribe-mesh-glow"></div>
+            <h2 class="subscribe-heading-3d">{{ home.subscribe_heading|default:"Stay Connected With UniHub" }}</h2>
+            <p class="subscribe-subheading-3d">{{ home.subscribe_subheading|default:"Subscribe to receive important academic deadlines and campus alerts directly in your inbox." }}</p>
+
+            <form class="subscribe-form-3d" method="POST" action="#">
+                {% csrf_token %}
+                <input type="email" name="email" class="subscribe-input-3d" placeholder="Enter your university email..." required>
+                <button type="submit" class="subscribe-btn-3d">{{ home.subscribe_button|default:"Subscribe Now" }}</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- ──────────────────────────────────────────────
+         8. Footer with Subtle Glassmorphism
+    ────────────────────────────────────────────── -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top reveal-on-scroll">
+                <div class="footer-brand">
+                    <h3>{{ home.nav_heading|default:"UniHub" }}</h3>
+                    <p>{{ home.footer_description|default:"A single university platform replacing the senior a fresher doesn't have yet. Clear, trustworthy, and organized." }}</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#societies">Societies</a></li>
+                        <li><a href="#deadlines">Deadlines</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#announcements">Announcements</a></li>
+                        <li><a href="#faqs">FAQs</a></li>
+                        <li><a href="/admin/">Admin Portal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="/admin/">Faculty Login</a></li>
+                        <li><a href="#">Report Issue</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>{{ home.footer_text|default:"UniHub — Designed for University Freshers." }}</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <!-- Swiper 3D JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="{% static 'script/navbar.js' %}"></script>
+    <script src="{% static 'script/announcement.js' %}"></script>
+    <script src="{% static 'script/script.js' %}"></script>
+
+</body>
+</html>

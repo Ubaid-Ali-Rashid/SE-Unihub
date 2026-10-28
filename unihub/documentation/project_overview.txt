@@ -1,0 +1,58 @@
+PROJECT OVERVIEW — UniHub
+=========================
+Last updated: 2026-10-27
+
+PURPOSE
+-------
+Every year a new batch of freshers joins the university. In the beginning
+they don't know any seniors and are mostly surrounded by other freshers
+who are just as lost. They don't know where departments and offices are,
+which rules and guidelines apply to them, what deadlines are coming, or
+whom to ask.
+
+UniHub exists to be that guide. It is a single platform that replaces
+the senior a fresher doesn't have yet.
+
+
+SCOPE
+-----
+UniHub covers the following areas:
+- Department locations, offices and faculty (with floor and directions)
+- Guidelines and rules (department-specific)
+- Upcoming deadlines and announcements
+- Courses by department and semester
+- Societies, how to join them, and their events
+- FAQs (accessible without login)
+- Community Q&A with moderated answers
+- Personal checklist for new-student tasks
+
+
+DESIGN PRINCIPLES
+-----------------
+1. Clarity first
+   A confused fresher should find an answer within a few clicks.
+
+2. Trustworthy information
+   Official content comes from admins/faculty. Community answers are
+   approved before they count as reliable.
+
+3. Organized around departments
+   Most content is tied to a department, since that is how a fresher
+   thinks about the university.
+
+4. Simple and readable
+   This is a student software engineering project.
+
+
+STATUS
+------
+- Django project and home app created.
+- ERD (16 entities) and Level 1 DFD finalized.
+- Database models implemented and migrated.
+- All models registered in Django admin.
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated whenever the project scope,
+purpose, design principles, or overall status changes.
+------------------------------------------------------------------------

@@ -1,0 +1,66 @@
+PROJECT STRUCTURE — UniHub
+===========================
+Last updated: 2026-10-27
+
+
+Project/
+├── venv/                          Python virtual environment
+├── gantt_chart.png                Project Gantt chart
+├── DFD.png                        Level 1 Data Flow Diagram
+│
+└── unihub/                        Django project root
+    ├── manage.py                  Django management script
+    ├── db.sqlite3                 SQLite database
+    │
+    ├── documentation/             Project documentation
+    │   ├── project_overview.txt
+    │   ├── requirements.txt
+    │   ├── user_roles.txt
+    │   ├── database_schema.txt
+    │   ├── data_flow_description.txt
+    │   ├── technology_stack.txt
+    │   ├── project_structure.txt  (this file)
+    │   └── changelog.txt
+    │
+    ├── static/                    Static assets (CSS, JS, images, icons)
+    │   ├── style/
+    │   │   ├── navbar.css         Reusable navbar styles
+    │   │   ├── announcement.css   Announcement banner styles
+    │   │   └── style.css          Main layout, hero, coming-soon, cards
+    │   ├── script/
+    │   │   ├── navbar.js          Mobile menu toggle, active states, shadow
+    │   │   ├── announcement.js    Banner dismiss logic
+    │   │   └── script.js          Swiper init, smooth scroll, form handlers
+    │   ├── logo/                  Logos and favicons
+    │   └── images/                Visual assets and hero banners
+    │
+    ├── templates/                 Django HTML templates
+    │   ├── navbar.html            Reusable navbar component
+    │   └── index.html             Front page template with Home model context
+    │
+    ├── unihub/                    Django project configuration
+    │   ├── __init__.py
+    │   ├── settings.py            Configured TEMPLATES DIRS, STATICFILES_DIRS
+    │   ├── urls.py                Root URLconf (routes to home.urls & admin)
+    │   ├── wsgi.py                WSGI entry point
+    │   └── asgi.py                ASGI entry point
+    │
+    └── home/                      Main Django app
+        ├── __init__.py
+        ├── admin.py               All 17 models registered with fieldsets
+        ├── apps.py                App configuration
+        ├── models.py              16 ERD models + Home dynamic configuration model
+        ├── views.py               home_view with Home content injection
+        ├── urls.py                Route to home_view (name='home')
+        ├── tests.py               App tests
+        └── migrations/
+            ├── __init__.py
+            ├── 0001_initial.py
+            ├── 0002_alter_announcement_author_and_more.py
+            └── 0003_home.py
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated whenever a new file, folder,
+or app is added to or removed from the project.
+------------------------------------------------------------------------

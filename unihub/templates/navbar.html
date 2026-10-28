@@ -1,0 +1,35 @@
+{% load static %}
+<!-- Reusable Navigation Bar Component -->
+<header class="header">
+    <nav class="nav-container">
+        <div class="nav-brand">
+            <a href="/" class="brand-link">
+                {% if home.nav_logo %}
+                    <img src="{{ home.nav_logo }}" loading="lazy" alt="Logo" class="nav-logo">
+                {% else %}
+                    <span class="nav-logo-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                {% endif %}
+                <h3 class="nav-title">{{ home.nav_heading|default:"UniHub" }}</h3>
+            </a>
+        </div>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Navigation Links (Fits cleanly within navbar container) -->
+        <div class="nav-menu" id="nav-menu">
+            <a id="nav-home" href="/" class="nav-link"><strong>{{ home.nav_home|default:"Home" }}</strong></a>
+            <a id="nav-about" href="#about" class="nav-link"><strong>{{ home.nav_about|default:"About" }}</strong></a>
+            <a id="nav-departments" href="#departments" class="nav-link"><strong>{{ home.nav_departments|default:"Departments" }}</strong></a>
+            <a id="nav-guidelines" href="#guidelines" class="nav-link"><strong>{{ home.nav_guidelines|default:"Guidelines" }}</strong></a>
+            <a id="nav-courses" href="#courses" class="nav-link"><strong>{{ home.nav_courses|default:"Courses" }}</strong></a>
+            <a id="nav-societies" href="#societies" class="nav-link"><strong>{{ home.nav_societies|default:"Societies" }}</strong></a>
+            <a id="nav-events" href="#events" class="nav-link"><strong>{{ home.nav_events|default:"Events" }}</strong></a>
+            <a id="nav-faqs" href="#faqs" class="nav-link"><strong>{{ home.nav_faqs|default:"FAQs" }}</strong></a>
+            <a id="nav-qa" href="#qa" class="nav-link"><strong>{{ home.nav_qa|default:"Q&A Forum" }}</strong></a>
+            <a id="nav-checklist" href="#checklist" class="nav-link"><strong>{{ home.nav_checklist|default:"Checklist" }}</strong></a>
+        </div>
+    </nav>
+</header>

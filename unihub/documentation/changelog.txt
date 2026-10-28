@@ -1,0 +1,174 @@
+CHANGELOG — UniHub
+====================
+Last updated: 2026-10-28
+
+This file records every significant change made to the project, in
+reverse chronological order (newest first).
+
+
+------------------------------------------------------------------------
+2026-10-28  UI Fixes: Join UniHub Placement, Static Media & Scroll Animations
+------------------------------------------------------------------------
+
+1. Adjusted "Join UniHub" button placement and navbar overflow fix:
+   - Moved the primary "Join UniHub" button inside the page body box
+     (specifically inside the Hero card actions container .hero-actions)
+     so it is prominently accessible and contained inside the body boundary.
+   - Removed the overflowing CTA button from the top navbar menu so that
+     all 10 navigation links fit cleanly inside the navbar container box
+     without being cut off or sticking outside the viewport.
+2. Removed animations on .media-placeholder-3d:
+   - Stripped all floating animations, rotational transforms, and 3D tilt
+     from .hero-media-wrapper-3d and .media-placeholder-3d.
+   - The hero media card now remains completely static, clean, and elegant.
+3. Added scroll-triggered entrance animations:
+   - Implemented .reveal-on-scroll with smooth opacity and translateY transitions
+     using modern IntersectionObserver in script.js.
+   - Applied scroll entrance animations with staggered delays across the hero
+     section, database-driven cards (events, societies, announcements, deadlines, FAQs),
+     and the subscription/footer sections.
+
+
+------------------------------------------------------------------------
+2026-10-28  Interactive WebGL 3D Background & Glassmorphic UI Upgrade
+------------------------------------------------------------------------
+
+1. Implemented interactive WebGL 3D background using Three.js:
+   - Added fixed full-screen 3D canvas (#webgl-3d-bg) rendered at 60fps.
+   - 3D floating university polyhedra (Torus Knot with wireframe halo,
+     cyan Icosahedron with wireframe cage, gold Octahedron, Dodecahedron,
+     and floating Ring) drifting and rotating smoothly in 3D space.
+   - Dynamic 3D particle constellation system (700 particles in gold,
+     cyan, and sapphire hues) rotating with depth.
+   - Dynamic 3D point light that tracks the user's cursor across the screen,
+     casting real-time specular reflections on the floating 3D geometry.
+   - Smooth 3D camera parallax that responds to mouse position and page scroll.
+2. Complete visual interface enhancement:
+   - Frosted glassmorphism design system (backdrop-filter: blur(24px) saturate(190%))
+     with specular border highlights and soft volumetric ambient shadows.
+   - Modernized typography pairing Plus Jakarta Sans (headings) and Inter (body).
+   - Upgraded hero card with ambient radial glow, floating badge, and 3D buttons.
+   - Enhanced "Coming Soon" block centered inside the boundary with frosted glass
+     accents, glowing borders, and floating 3D clock icon.
+   - Frosted glass navbar with brand logo icon, smooth route highlighting,
+     and 3D call-to-action button.
+3. Preserved all database visibility rules:
+   - Only sections with records in the database are rendered.
+   - Sections with > 3 records display as 3D Coverflow carousels with auto + manual change.
+   - Sections with <= 3 records display as static 3D cards grid.
+
+
+------------------------------------------------------------------------
+2026-10-28  3D Frontpage & Dynamic Section Visibility with Carousel
+------------------------------------------------------------------------
+
+1. Implemented complete 3D frontpage transformation:
+   - Added perspective rendering (perspective: 1200px) across page sections.
+   - Interactive 3D mouse-tilt effect on cards (tilt-3d) with dynamic rotateX,
+     rotateY, and floating layer depth (translateZ).
+   - 3D physical push buttons (btn-3d-primary, btn-3d-secondary) with realistic
+     extrusion shadows and active states.
+   - 3D hero card presentation with multi-tier glassmorphism and elevated stage.
+   - 3D recessed "Coming Soon" block with floating icon and depth styling.
+2. Implemented database-driven section visibility:
+   - Sections (Events, Societies, Announcements, Deadlines, FAQs) only appear
+     on the front page when actual records exist in the database.
+   - If a table has 0 records in the database, that section is completely
+     omitted from the page (no placeholder cards).
+3. Implemented dynamic carousel / grid threshold:
+   - When items in a section are > 3: rendered as a Swiper 3D Coverflow carousel
+     featuring automatic card change (autoplay every 3.5s with pause on hover)
+     and manual card change (previous/next 3D circular buttons, clickable
+     pagination bullets, and touch/drag swipe).
+   - When items in a section are <= 3 (1 to 3 items): rendered in a static
+     3D card grid (cards-3d-grid) without carousel overhead.
+4. Updated home_view in unihub/home/views.py to query all active models
+   (Event, Society, Announcement, Deadline, FAQ, Department, Guideline)
+   and pass records along with their counts to index.html.
+5. Updated style.css and script.js with 3D coverflow Swiper configurations,
+   tilt physics, and responsive 3D styling.
+
+
+------------------------------------------------------------------------
+2026-10-27  Front Page & Dynamic Home Model Implementation
+------------------------------------------------------------------------
+
+1. Created Home model in home/models.py to store all front-page content:
+   - Configurable navbar headings, links, logo, and CTA button.
+   - Hero title, description, hero image/video, and action buttons.
+   - Announcement banner content and visibility toggle.
+   - Features section titles, descriptions, and 4 service cards.
+   - Events/societies section texts and action button.
+   - FAQ section texts.
+   - Subscribe/newsletter texts and button.
+   - Footer copyright and about description.
+   - All fields default to friendly student guide copy and allow null/blank.
+2. Implemented "Coming Soon" center-block logic:
+   - When the description is empty or not given in admin, the description
+     box displays "Coming Soon" centered within the block/boundary with
+     a pulse icon and message.
+3. Registered Home in home/admin.py with structured fieldsets for intuitive
+   administration.
+4. Created and applied migration unihub/home/migrations/0003_home.py.
+5. Configured settings.py:
+   - Added BASE_DIR / 'templates' to TEMPLATES['DIRS'].
+   - Added BASE_DIR / 'static' to STATICFILES_DIRS.
+   - Added MEDIA_URL and MEDIA_ROOT.
+6. Created reusable navigation bar:
+   - unihub/templates/navbar.html (reusable component with mobile toggle)
+   - unihub/static/style/navbar.css
+   - unihub/static/script/navbar.js
+7. Created announcement banner assets:
+   - unihub/static/style/announcement.css
+   - unihub/static/script/announcement.js
+8. Created front page stylesheet and script:
+   - unihub/static/style/style.css
+   - unihub/static/script/script.js
+9. Created unihub/templates/index.html importing navbar.html and rendering
+   all dynamic content from the Home model.
+10. Implemented home_view in unihub/home/views.py and mapped URL at ''
+    in unihub/home/urls.py.
+11. Updated documentation files:
+    - database_schema.txt (added Table 17: Home)
+    - project_structure.txt (added templates, static, style, script)
+    - changelog.txt
+
+
+------------------------------------------------------------------------
+2026-10-27  Initial project setup
+------------------------------------------------------------------------
+
+1. Created Python virtual environment (venv).
+2. Installed Django 5.2.18.
+3. Created Django project "unihub" using django-admin startproject.
+4. Created Django app "home" using manage.py startapp.
+5. Registered "home" in INSTALLED_APPS (settings.py).
+6. Implemented 16 database models in home/models.py based on the
+   finalized ERD:
+     - Department, Category, ChecklistItem, Society
+     - User, Location, Course
+     - Guideline, Deadline, FAQ
+     - Announcement, UserChecklist, Question, Answer
+     - Faculty, Event
+7. Set all model fields to allow null (null=True, blank=True).
+8. Registered all 16 models in home/admin.py.
+9. Ran makemigrations and migrate successfully.
+10. Generated project Gantt chart (gantt_chart.png).
+11. Generated Level 1 Data Flow Diagram (DFD.png).
+12. Installed matplotlib (with pillow, numpy dependencies).
+13. Created documentation folder with 8 documentation files:
+      - project_overview.txt
+      - requirements.txt
+      - user_roles.txt
+      - database_schema.txt
+      - data_flow_description.txt
+      - technology_stack.txt
+      - project_structure.txt
+      - changelog.txt
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated with a dated entry whenever any
+change is made to the project — including new files, modified models,
+new features, bug fixes, or configuration changes.
+------------------------------------------------------------------------

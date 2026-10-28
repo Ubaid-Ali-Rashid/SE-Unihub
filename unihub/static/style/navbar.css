@@ -1,0 +1,147 @@
+/* ──────────────────────────────────────────────
+   Glassmorphic 3D Navbar Styles — UniHub
+────────────────────────────────────────────── */
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.05);
+    z-index: 1000;
+    transition: all 0.35s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.header.scrolled {
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.1);
+    border-bottom-color: rgba(226, 232, 240, 0.8);
+}
+
+.nav-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0.85rem 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-sizing: border-box;
+}
+
+.nav-brand .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #0f172a;
+    flex-shrink: 0;
+}
+
+.nav-logo {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 6px rgba(14, 165, 233, 0.25));
+}
+
+.nav-logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1d4ed8, #0ea5e9);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 6px 14px rgba(29, 78, 216, 0.3);
+}
+
+.nav-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.6px;
+    background: linear-gradient(135deg, #0f172a 40%, #1d4ed8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.45rem 0.7rem;
+    border-radius: 10px;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    color: #1d4ed8;
+    background: rgba(29, 78, 216, 0.08);
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    color: #1d4ed8;
+    background: rgba(29, 78, 216, 0.1);
+}
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #0f172a;
+    cursor: pointer;
+    padding: 0.4rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1040px) {
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+        display: none;
+        gap: 0.8rem;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .nav-menu.show {
+        display: flex;
+    }
+
+    .nav-link {
+        width: 100%;
+        padding: 0.65rem 0.8rem;
+    }
+}

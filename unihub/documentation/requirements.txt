@@ -1,0 +1,84 @@
+FUNCTIONAL REQUIREMENTS — UniHub
+=================================
+Last updated: 2026-10-27
+
+The requirements below are derived from the finalized project scope.
+Each is grouped by the feature area it belongs to.
+
+
+FR-01  CAMPUS NAVIGATION
+-------------------------
+FR-01.1  The system shall display department locations with name, type,
+         floor, latitude, longitude, and directions.
+FR-01.2  The system shall list faculty members with their department,
+         office location, name, and designation.
+
+
+FR-02  GUIDELINES AND RULES
+-----------------------------
+FR-02.1  The system shall display guidelines filtered by category and
+         department.
+FR-02.2  Each guideline shall have a title, body, and last-updated date.
+
+
+FR-03  DEADLINES AND ANNOUNCEMENTS
+------------------------------------
+FR-03.1  The system shall display upcoming deadlines with title, due
+         date, category, and department.
+FR-03.2  The system shall display announcements with title, author,
+         department, and published-at timestamp.
+
+
+FR-04  COURSES
+--------------
+FR-04.1  The system shall list courses filtered by department and
+         semester.
+FR-04.2  Each course shall have a code, title, department, and semester.
+
+
+FR-05  SOCIETIES AND EVENTS
+-----------------------------
+FR-05.1  The system shall list societies with name, how-to-join
+         information, and contact details.
+FR-05.2  The system shall display events linked to a society and
+         location, with title and start time.
+
+
+FR-06  FAQs
+------------
+FR-06.1  The system shall display FAQs filtered by category.
+FR-06.2  FAQs shall be browsable without logging in.
+FR-06.3  Each FAQ shall have a question, answer, category, and
+         last-updated date.
+
+
+FR-07  COMMUNITY Q&A
+---------------------
+FR-07.1  A logged-in student shall be able to post a question.
+FR-07.2  A logged-in student shall be able to post an answer to a
+         question.
+FR-07.3  Answers shall have an is_approved flag; only approved answers
+         are shown as trusted.
+FR-07.4  Visitors (not logged in) shall be able to view approved Q&A.
+
+
+FR-08  PERSONAL CHECKLIST
+--------------------------
+FR-08.1  The system shall maintain a list of checklist items (with type,
+         title, and sort order).
+FR-08.2  Each student shall have a personal checklist tracking which
+         items are done.
+
+
+FR-09  USER MANAGEMENT
+-----------------------
+FR-09.1  Each user shall belong to a department and have a name, email,
+         role, and batch year.
+FR-09.2  The system shall support three roles: Visitor, Student, and
+         Admin/Faculty.
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated whenever a new requirement is
+added, an existing requirement is modified, or a requirement is removed.
+------------------------------------------------------------------------

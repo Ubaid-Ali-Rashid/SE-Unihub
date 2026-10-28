@@ -1,0 +1,218 @@
+DATABASE SCHEMA — UniHub
+=========================
+Last updated: 2026-10-27
+
+Source: ERD (16 entities) + Front Page Configuration (Home model in home/models.py).
+All fields currently allow null (null=True, blank=True).
+
+
+TABLE 1: Department
+---------------------
+  id            int           PK, auto
+  name          string(255)
+  code          string(50)
+  hod_name      string(255)
+
+
+TABLE 2: Category
+-------------------
+  id            int           PK, auto
+  name          string(255)
+  kind          string(100)
+
+
+TABLE 3: ChecklistItem
+------------------------
+  id            int           PK, auto
+  list_type     string(100)
+  title         string(255)
+  sort_order    int
+
+
+TABLE 4: Society
+------------------
+  id            int           PK, auto
+  name          string(255)
+  how_to_join   text
+  contact       string(255)
+
+
+TABLE 5: User
+---------------
+  id            int           PK, auto
+  department_id int           FK → Department
+  name          string(255)
+  email         string(255)
+  role          string(100)
+  batch_year    int
+
+
+TABLE 6: Location
+-------------------
+  id            int           PK, auto
+  department_id int           FK → Department
+  name          string(255)
+  type          string(100)
+  floor         string(50)
+  latitude      float
+  longitude     float
+  directions    text
+
+
+TABLE 7: Course
+-----------------
+  id            int           PK, auto
+  department_id int           FK → Department
+  code          string(50)
+  title         string(255)
+  semester      int
+
+
+TABLE 8: Guideline
+--------------------
+  id            int           PK, auto
+  category_id   int           FK → Category
+  department_id int           FK → Department
+  title         string(255)
+  body          text
+  last_updated  date
+
+
+TABLE 9: Deadline
+-------------------
+  id            int           PK, auto
+  category_id   int           FK → Category
+  department_id int           FK → Department
+  title         string(255)
+  due_date      datetime
+
+
+TABLE 10: FAQ
+--------------
+  id            int           PK, auto
+  category_id   int           FK → Category
+  question      string(500)
+  answer        text
+  last_updated  date
+
+
+TABLE 11: Announcement
+------------------------
+  id            int           PK, auto
+  author_id     int           FK → User
+  department_id int           FK → Department
+  title         string(255)
+  published_at  datetime
+
+
+TABLE 12: UserChecklist
+------------------------
+  id            int           PK, auto
+  user_id       int           FK → User
+  item_id       int           FK → ChecklistItem
+  is_done       bool          default=False
+
+
+TABLE 13: Question
+--------------------
+  id            int           PK, auto
+  user_id       int           FK → User
+  title         string(255)
+  created_at    datetime
+
+
+TABLE 14: Answer
+------------------
+  id            int           PK, auto
+  question_id   int           FK → Question
+  user_id       int           FK → User
+  body          text
+  is_approved   bool          default=False
+
+
+TABLE 15: Faculty
+-------------------
+  id            int           PK, auto
+  department_id int           FK → Department
+  office_id     int           FK → Location
+  name          string(255)
+  designation   string(255)
+
+
+TABLE 16: Event
+-----------------
+  id            int           PK, auto
+  society_id    int           FK → Society
+  location_id   int           FK → Location
+  title         string(255)
+  starts_at     datetime
+
+
+TABLE 17: Home (Front Page Content Configuration)
+--------------------------------------------------
+  id                    int           PK, auto
+  page_title            string(255)   Browser title
+  nav_logo              string(255)   Path or URL to logo
+  nav_heading           string(255)   Brand title
+  nav_home              string(100)   Home link text
+  nav_about             string(100)   About link text
+  nav_departments       string(100)   Departments link text
+  nav_guidelines        string(100)   Guidelines link text
+  nav_courses           string(100)   Courses link text
+  nav_societies         string(100)   Societies link text
+  nav_events            string(100)   Events link text
+  nav_faqs              string(100)   FAQs link text
+  nav_qa                string(100)   Q&A Forum link text
+  nav_checklist         string(100)   Checklist link text
+  nav_button_text       string(100)   CTA button text
+  nav_button_url        string(255)   CTA button destination
+  desc_heading          string(255)   Hero main heading
+  description           text          Hero description ("Coming Soon" if blank)
+  hero_image            string(255)   Hero image URL/path
+  hero_video_url        string(255)   Hero video URL
+  hero_button_text      string(100)   Primary hero button text
+  hero_button_url       string(255)   Primary hero button destination
+  secondary_button_text string(100)   Secondary hero button text
+  secondary_button_url  string(255)   Secondary hero button destination
+  announcement          text          Top announcement notice text
+  show_announcement     bool          Toggle for announcement banner
+  features_heading      string(255)   Features section title
+  features_description  text          Features section description
+  feature1_title        string(255)   Campus Navigation title
+  feature1_desc         text          Campus Navigation description
+  feature2_title        string(255)   Guidelines & Rules title
+  feature2_desc         text          Guidelines & Rules description
+  feature3_title        string(255)   Community Q&A title
+  feature3_desc         text          Community Q&A description
+  feature4_title        string(255)   Fresher Checklist title
+  feature4_desc         text          Fresher Checklist description
+  event_heading         string(255)   Events & Societies section title
+  event_description     text          Events & Societies section description
+  event_button_text     string(100)   Events button text
+  faq_heading           string(255)   FAQ section title
+  faq_description       text          FAQ section description
+  subscribe_heading     string(255)   Subscribe section title
+  subscribe_subheading  string(255)   Subscribe section subtitle
+  subscribe_button      string(100)   Subscribe button text
+  footer_text           string(255)   Footer copyright/tagline
+  footer_description    text          Footer about paragraph
+
+
+RELATIONSHIPS SUMMARY
+----------------------
+Department  ← User, Location, Course, Guideline, Deadline,
+               Announcement, Faculty
+Category    ← Guideline, Deadline, FAQ
+User        ← Announcement (author), UserChecklist, Question, Answer
+ChecklistItem ← UserChecklist
+Question    ← Answer
+Location    ← Faculty (office), Event
+Society     ← Event
+Home        ← Standalone singleton model for dynamic front-page content
+
+
+------------------------------------------------------------------------
+UPDATE RULE: This file must be updated whenever a model is added,
+removed, or its fields change (including field type, constraints, or
+relationship changes).
+------------------------------------------------------------------------
